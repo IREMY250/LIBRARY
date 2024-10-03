@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150,null=False)
     author = models.CharField(max_length=150)
     isbn = models.CharField(max_length=13, unique=True)
     published_date = models.DateField()
@@ -13,6 +13,8 @@ class Book(models.Model):
 
 
 class User(AbstractUser):
+    name = models.CharField(max_length=100, default='Default Name')
+    email = models.EmailField()
     date_of_membership = models.DateField(auto_now_add=True)
     active_status = models.BooleanField(default=True)
 
@@ -33,7 +35,7 @@ class User(AbstractUser):
     )
 
 
-    class Transaction(models.Model):
+class Transaction(models.Model):
         user = models.ForeignKey(User, on_delete=models.CASCADE)
         book = models.ForeignKey(Book, on_delete=models.CASCADE)
         checkout_date = models.DateTimeField(auto_now_add=True)
